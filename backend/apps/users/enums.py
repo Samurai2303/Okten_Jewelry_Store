@@ -16,16 +16,14 @@ class RegEx(Enum):
         ]
     )
     NAME = (
-        r'^[a-zA-Z]{2-16}$',
+        r'^[a-zA-Z]{2,16}$',
         'Name must contain only letters. Length from 2 to 16 symbols'
     )
     SURNAME = (
-        r'^[a-zA-Z]{2-24}$',
+        r'^[a-zA-Z]{2,24}$',
         'Surname must contain only letters. Length from 2 to 24 symbols'
     )
-    
-    def __init__(self, pattern:str, msg:str|list[str]):
+
+    def __init__(self, pattern: str, msg: str | list[str]):
         self.pattern = pattern
         self.msg = msg
-        
-        

@@ -1,11 +1,11 @@
 from typing import Type
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.base_user import BaseUserManager
 from django.db import transaction
 
+# from apps.products.serializers import ProductSerializer
 from rest_framework.serializers import ModelSerializer
-
-from backend.apps.products.serializers import ProductSerializer
 
 from .models import ProfileModel
 from .models import UserModel as User
@@ -25,16 +25,17 @@ class ProfileSerializer(ModelSerializer):
         fields = ('name', 'surname', 'age', 'phone', 'photo')
 
 
-class UserSerializer(ModelSerializer):
+class UserSerializer(ModelSerializer, BaseUserManager):
     profile = ProfileSerializer()
-    favorites = ProductSerializer(many=True, read_only=True)
+
+    # favorites = ProductSerializer(many=True, read_only=True)
 
     class Meta:
         model = UserModel
         fields = (
-            'id', 'email', 'password', 'is_active', 'is_admin', 'is_superuser', 'created_at', 'updated_at',
+            'id', 'email', 'password', 'is_active', 'is_staff', 'is_superuser', 'created_at', 'updated_at',
             'last_login', 'profile', 'favorites')
-        read_only_fields = ('id', 'is_active', 'is_admin', 'is_superuser', 'created_at', 'updated_at', 'last_login',
+        read_only_fields = ('id', 'is_active', 'is_staff', 'is_superuser', 'created_at', 'updated_at', 'last_login',
                             'favorites')
         extra_kwargs = {
             'password': {
@@ -48,3 +49,32 @@ class UserSerializer(ModelSerializer):
         user = UserModel.objects.create_user(**validated_data)
         ProfileModel.objects.create(**profile, user=user)
         return user
+
+    def update(self, instance: UserModel, validated_data: dict):
+        try:
+            password = validated_data.pop('password')
+            instance.set_password(password)
+        except (Exception,):
+            pass
+        try:
+            email = validated_data.pop('email')
+            email = self.normalize_email(email)
+            setattr(instance, 'email', email)
+            instance.save()
+        except (Exception,):
+            pass
+
+        try:
+            profile = validated_data.pop('profile')
+            profile = dict(profile)
+            for key, value in profile.items():
+                setattr(instance.profile, key, value)
+            instance.save()
+        except (Exception,):
+            pass
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
+        return instance
+
+

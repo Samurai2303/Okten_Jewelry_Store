@@ -2,16 +2,15 @@ from typing import Type
 
 from django.contrib.auth import get_user_model
 
+from apps.products.serializers import ProductSerializer
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
-from backend.apps.products.serializers import ProductSerializer
-
 from .models import UserModel as User
 from .permissions import IsSuperUser
-from .serializers import UserSerializer
+from .serializers import ProfileSerializer, UserSerializer
 
 UserModel: Type[User] = get_user_model()
 
@@ -26,7 +25,7 @@ class ListCreateUsersView(GenericAPIView):
         return AllowAny(),
 
     def get(self, *args, **kwargs):
-        users = self.queryset
+        users = self.get_queryset()
         serializer = self.serializer_class(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -76,12 +75,43 @@ class GetUserByIdView(RetrieveAPIView):
     permission_classes = (IsAdminUser,)
 
 
-class RetrieveUpdateLoggedUserView(RetrieveUpdateAPIView):
+class RetrieveUpdateLoggedUserView(GenericAPIView):
     serializer_class = UserSerializer
     queryset = UserModel.objects.all()
 
     def get_object(self):
         return self.request.user
+
+    def get(self, *args, **kwargs):
+        user = self.get_object()
+        serializer = self.serializer_class(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, *args, **kwargs):
+        user = self.get_object()
+        data = self.request.data
+        files = self.request.FILES
+        serializer = self.serializer_class(instance=user, data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        for key in files:
+            serializer1 = ProfileSerializer(instance=user.profile, data={'photo': files[key]}, partial=True)
+            serializer1.is_valid(raise_exception=True)
+            serializer1.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, *args, **kwargs):
+        user = self.get_object()
+        data = self.request.data
+        files = self.request.FILES
+        serializer = self.serializer_class(instance=user, data=data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        for key in files:
+            serializer1 = ProfileSerializer(instance=user.profile, data={'photo': files[key]}, partial=True)
+            serializer1.is_valid(raise_exception=True)
+            serializer1.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class MakeAdminView(GenericAPIView):
@@ -94,7 +124,7 @@ class MakeAdminView(GenericAPIView):
 
     def patch(self, *args, **kwargs):
         user = self.get_object()
-        user.is_admin = True
+        user.is_staff = True
         user.save()
         serializer = self.serializer_class(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -107,7 +137,7 @@ class MakeUserView(GenericAPIView):
 
     def patch(self, *args, **kwargs):
         user = self.get_object()
-        user.is_admin = False
+        user.is_staff = False
         user.save()
         serializer = self.serializer_class(user)
         return Response(serializer.data, status=status.HTTP_200_OK)

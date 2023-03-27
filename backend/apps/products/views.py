@@ -1,9 +1,9 @@
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import DestroyAPIView, GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
-from .models import ProductModel
+from .models import ProductModel, ProductPhotosModel
 from .serializers import ProductPhotoSerializer, ProductSerializer
 
 
@@ -16,6 +16,19 @@ class ListCreateProductView(ListCreateAPIView):
             return AllowAny(),
         return IsAdminUser(),
 
+    def post(self, *args, **kwargs):
+        data = self.request.data
+        files = self.request.FILES
+        product = ProductSerializer(data=data)
+        product.is_valid(raise_exception=True)
+        product.save()
+        for key in files:
+            serializer = ProductPhotoSerializer(data={'photo': files[key]})
+            serializer.is_valid(raise_exception=True)
+            serializer.save(product=product)
+        return Response(product.data, status=status.HTTP_200_OK)
+
+
 class RetrieveUpdateDestroyProductView(RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = ProductModel.objects.all()
@@ -24,6 +37,7 @@ class RetrieveUpdateDestroyProductView(RetrieveUpdateDestroyAPIView):
         if self.request.method == 'GET':
             return AllowAny(),
         return IsAdminUser(),
+
 
 class AddProductPhoto(GenericAPIView):
     queryset = ProductModel.objects.all()
@@ -40,4 +54,7 @@ class AddProductPhoto(GenericAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-    
+class DeleteProductPhotoByIdView(DestroyAPIView):
+    serializer_class = ProductPhotoSerializer
+    queryset = ProductPhotosModel.objects.all()
+    permission_classes = (IsAdminUser,)

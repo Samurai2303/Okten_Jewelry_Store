@@ -2,8 +2,6 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core import validators as V
 from django.db import models
 
-from backend.apps.products.models import ProductModel
-
 from .enums import RegEx
 from .managers import UserManager
 from .services import upload_user_photo
@@ -18,11 +16,11 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
         V.RegexValidator(RegEx.PASSWORD.pattern, RegEx.PASSWORD.msg)
     ])
     is_active = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    favorites = models.ManyToManyField(ProductModel, through='UsersProductsModel', related_name='users')
+    favorites = models.ManyToManyField('products.ProductModel', through='UsersProductsModel', related_name='users')
 
     USERNAME_FIELD = 'email'
 
@@ -37,7 +35,7 @@ class ProfileModel(models.Model):
         V.RegexValidator(RegEx.NAME.pattern, RegEx.NAME.msg)
     ])
     surname = models.CharField(max_length=24, validators=[
-        RegEx.SURNAME.pattern, RegEx.SURNAME.msg
+        V.RegexValidator(RegEx.SURNAME.pattern, RegEx.SURNAME.msg)
     ])
     age = models.IntegerField(validators=[
         V.MinValueValidator(14, 'Minimal age is 14'),
@@ -55,4 +53,4 @@ class UsersProductsModel(models.Model):
         db_table = 'users_products'
 
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
+    product = models.ForeignKey('products.ProductModel', on_delete=models.CASCADE)

@@ -1,7 +1,5 @@
 from django.db import models
 
-from backend.apps.orders.models import OrderModel
-
 from .services import upload_product_photo
 
 
@@ -11,12 +9,12 @@ class ProductModel(models.Model):
 
     category = models.CharField(max_length=32)
     material = models.CharField(max_length=32)
-    length = models.IntegerField()
-    clasp = models.CharField(max_length=32)
+    length = models.IntegerField(blank=True)
+    clasp = models.CharField(max_length=32, blank=True)
     price = models.IntegerField()
-    discounts = models.IntegerField()
-    amount = models.IntegerField()
-    solded = models.IntegerField()
+    discounts = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
+    solded = models.IntegerField(default=0)
 
 
 class ProductPhotosModel(models.Model):
@@ -24,13 +22,13 @@ class ProductPhotosModel(models.Model):
         db_table = 'products_photos'
 
     photo = models.ImageField(upload_to=upload_product_photo, blank=True)
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, related_name='photos')
+    product = models.ForeignKey('products.ProductModel', on_delete=models.CASCADE, related_name='photos')
 
 
 class ProductWrapModel(models.Model):
     class Meta:
         db_table = 'product_wrap'
 
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, related_name='orders')
-    order = models.ForeignKey(OrderModel, on_delete=models.CASCADE, related_name='product_wraps')
+    product = models.ForeignKey('products.ProductModel', on_delete=models.CASCADE, related_name='orders')
+    order = models.ForeignKey('orders.OrderModel', on_delete=models.CASCADE, related_name='product_wraps')
     amount = models.IntegerField()
