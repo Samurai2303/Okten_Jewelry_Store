@@ -1,27 +1,29 @@
-from apps.products.models import ProductModel
+from apps.products.models import ProductModel, ProductWrapModel
 from apps.products.serializers import ProductWrapSerializer
+from core.pagination.pagination_class import CustomPaginationClass
 from rest_framework import status
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
+from .filters import OrderFilters
 from .models import OrderModel
 from .serializers import OrderSerializer
 
 
-class ListCreateOrderView(GenericAPIView):
+class ListCreateOrderView(ListCreateAPIView):
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.all()
+    pagination_class = CustomPaginationClass
+    filterset_class = OrderFilters
 
     def get_permissions(self):
         if self.request.method == 'GET':
             return IsAdminUser(),
         return IsAuthenticated(),
 
-    def get(self, *args, **kwargs):
-        orders = self.get_queryset()
-        serializer = self.serializer_class(orders, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
 
     def post(self, *args, **kwargs):
         user = self.request.user
@@ -61,7 +63,61 @@ class GetOrderByIdView(GenericAPIView):
         user = self.request.user
         order: OrderModel = self.get_object()
         if user.is_staff or order.user == user:
-            serializer = OrderSerializer(order)
+            serializer = self.serializer_class(order)
             return Response(serializer.data, status=status.HTTP_200_OK)
         exception_msg = {"detail": "You do not have permission to perform this action."}
         return Response(exception_msg, status=status.HTTP_403_FORBIDDEN)
+
+
+class GetUserOrdersView(GenericAPIView):
+    serializer_class = OrderSerializer
+    queryset = OrderModel.objects.all()
+    pagination_class = CustomPaginationClass
+
+    def get(self, *args, **kwargs):
+        user = self.request.user
+        orders = self.get_queryset().filter(user=user)
+        serializer = self.serializer_class(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CancelOrderView(GenericAPIView):
+    serializer_class = OrderSerializer
+    queryset = OrderModel.objects.all()
+
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        order: OrderModel = self.get_object()
+        if user.is_staff or order.user == user:
+            order.status = 'Cancelled'
+            order.save()
+            serializer = self.serializer_class(order)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        exception_msg = {"detail": "You do not have permission to perform this action."}
+        return Response(exception_msg, status=status.HTTP_403_FORBIDDEN)
+
+
+class ConfirmOrderView(GenericAPIView):
+    serializer_class = OrderSerializer
+    queryset = OrderModel.objects.all()
+    permission_classes = (IsAdminUser,)
+
+    def post(self, *args, **kwargs):
+        data: dict = self.request.data
+        try:
+            delivery_number = data.pop('delivery_number')
+        except (Exception,):
+            return Response('field "delivery_number" is required', status=status.HTTP_400_BAD_REQUEST)
+        order: OrderModel = self.get_object()
+        order.delivery_number = delivery_number
+        order.status = 'confirmed'
+        order.save()
+        product_wraps = order.product_wraps.all()
+        for product_wrap in product_wraps:
+            product_wrap: ProductWrapModel = product_wrap
+            product_wrap.product.amount = product_wrap.product.amount - product_wrap.amount
+            product = product_wrap.product
+            product.save()
+
+        serializer = self.serializer_class(order)
+        return Response(serializer.data, status=status.HTTP_200_OK)

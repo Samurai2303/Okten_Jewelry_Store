@@ -8,6 +8,7 @@ djangorestframework = "*"
 mysqlclient = "*"
 djangorestframework-simplejwt = "*"
 pillow = "*"
+django-filter = "*"
 
 [dev-packages]
 isort = "*"

@@ -4,6 +4,7 @@ from .views import (
     ActivateUserView,
     BlockUserView,
     FavoriteProductsView,
+    ForgotPasswordView,
     GetUserByIdView,
     ListCreateUsersView,
     MakeAdminView,
@@ -19,5 +20,7 @@ urlpatterns = [
     path('/retrieveUpdate', RetrieveUpdateLoggedUserView.as_view()),
     path('/<int:pk>/admin', MakeAdminView.as_view()),
     path('/<int:pk>/user', MakeUserView.as_view()),
-    path('/favorites', FavoriteProductsView.as_view())
+    path('/favorites', FavoriteProductsView.as_view()),
+    path('/forgot_password/<str:email>', ForgotPasswordView.as_view()),
+    
 ]

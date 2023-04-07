@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import transaction
 
-# from apps.products.serializers import ProductSerializer
+from core.services.email_service import EmailService
 from rest_framework.serializers import ModelSerializer
 
 from .models import ProfileModel
@@ -48,8 +48,10 @@ class UserSerializer(ModelSerializer, BaseUserManager):
         profile = validated_data.pop('profile')
         user = UserModel.objects.create_user(**validated_data)
         ProfileModel.objects.create(**profile, user=user)
+        EmailService.register_email(user)
         return user
 
+    @transaction.atomic
     def update(self, instance: UserModel, validated_data: dict):
         try:
             password = validated_data.pop('password')
@@ -76,5 +78,3 @@ class UserSerializer(ModelSerializer, BaseUserManager):
             setattr(instance, key, value)
         instance.save()
         return instance
-
-

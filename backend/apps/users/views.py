@@ -3,11 +3,14 @@ from typing import Type
 from django.contrib.auth import get_user_model
 
 from apps.products.serializers import ProductSerializer
+from core.pagination.pagination_class import CustomPaginationClass
+from core.services.email_service import EmailService
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, RetrieveAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveAPIView, get_object_or_404
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
+from .filters import UserFilters
 from .models import UserModel as User
 from .permissions import IsSuperUser
 from .serializers import ProfileSerializer, UserSerializer
@@ -15,19 +18,21 @@ from .serializers import ProfileSerializer, UserSerializer
 UserModel: Type[User] = get_user_model()
 
 
-class ListCreateUsersView(GenericAPIView):
+class ListCreateUsersView(ListCreateAPIView):
     serializer_class = UserSerializer
     queryset = UserModel.objects.all()
+    pagination_class = CustomPaginationClass
+    filterset_class = UserFilters
 
     def get_permissions(self):
         if self.request.method == 'GET':
             return IsAdminUser(),
         return AllowAny(),
 
-    def get(self, *args, **kwargs):
-        users = self.get_queryset()
-        serializer = self.serializer_class(users, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    # def get(self, *args, **kwargs):
+    #     users = self.get_queryset()
+    #     serializer = self.serializer_class(users, many=True)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, *args, **kwargs):
         data = self.request.data
@@ -146,6 +151,7 @@ class MakeUserView(GenericAPIView):
 class FavoriteProductsView(GenericAPIView):
     serializer_class = ProductSerializer
     queryset = UserModel.objects.all()
+    pagination_class = CustomPaginationClass
 
     def get(self, *args, **kwargs):
         user: UserModel = self.request.user
@@ -167,3 +173,15 @@ class FavoriteProductsView(GenericAPIView):
         user.favorites.remove(product)
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ForgotPasswordView(GenericAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = UserSerializer
+    queryset = UserModel.objects.all()
+
+    def get(self, *args, **kwargs):
+        email = kwargs.get('email')
+        user = get_object_or_404(self.get_queryset(), email=email)
+        EmailService.recovery_email(user)
+        return Response(status=status.HTTP_200_OK)

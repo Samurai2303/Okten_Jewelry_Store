@@ -1,8 +1,10 @@
+from core.pagination.pagination_class import CustomPaginationClass
 from rest_framework import status
 from rest_framework.generics import DestroyAPIView, GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
+from .filters import ProductFilters
 from .models import ProductModel, ProductPhotosModel
 from .serializers import ProductPhotoSerializer, ProductSerializer
 
@@ -10,6 +12,8 @@ from .serializers import ProductPhotoSerializer, ProductSerializer
 class ListCreateProductView(ListCreateAPIView):
     serializer_class = ProductSerializer
     queryset = ProductModel.objects.all()
+    pagination_class = CustomPaginationClass
+    filterset_class = ProductFilters
 
     def get_permissions(self):
         if self.request.method == 'GET':
