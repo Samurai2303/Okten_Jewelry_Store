@@ -1,0 +1,53 @@
+.wrap {
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dot {
+    width: 15px;
+    height: 15px;
+    margin: 20px;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    position: relative;
+    animation: loading 1.7s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0%{
+        bottom: 0;
+    }
+    12%{
+        bottom: 30px;
+    }
+    24%{
+        bottom: 0
+    }
+    100%{
+        bottom: 0
+    }
+}
+
+.dot1{
+    animation-delay: 0s;
+}
+.dot2{
+    animation-delay: 0.1s;
+}
+.dot3{
+    animation-delay: 0.2s;
+}
+.dot4{
+    animation-delay: 0.3s;
+}
+.dot5{
+    animation-delay: 0.4s;
+}
+.dot6{
+    animation-delay: 0.5s;
+}
+.dot7{
+    animation-delay: 0.6s;
+}

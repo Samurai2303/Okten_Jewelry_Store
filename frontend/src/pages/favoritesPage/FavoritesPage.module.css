@@ -1,0 +1,58 @@
+.wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.title {
+    font-family: "Agency FB", sans-serif;
+    font-weight: 550;
+    font-size: 35px;
+    letter-spacing: 5px;
+    margin: 15px;
+    text-align: center;
+}
+
+.products_wrap {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 15px;
+    width: 90%;
+}
+
+.no_products {
+    font-family: "Agency FB", sans-serif;
+    font-weight: 550;
+    letter-spacing: 10px;
+    font-size: 50px;
+    margin: 70px;
+}
+
+.btns_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 500px;
+    margin: 15px;
+}
+
+.btn {
+    width: 120px;
+    height: 40px;
+    font-family: "Agency FB", sans-serif;
+    font-size: 25px;
+    font-weight: 580;
+    letter-spacing: 4px;
+    color: black;
+    border-radius: 8px;
+    border: 1px solid black;
+    transition: 600ms;
+}
+
+.btn:hover {
+    box-shadow: 0 0 10px 0 inset rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+}

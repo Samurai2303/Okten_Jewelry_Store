@@ -41,7 +41,7 @@ class ProfileModel(models.Model):
         V.MinValueValidator(14, 'Minimal age is 14'),
         V.MaxValueValidator(99, 'Maximum age is 99')
     ])
-    phone = models.CharField(max_length=20, validators=[
+    phone = models.CharField(max_length=18, validators=[
         V.RegexValidator(RegEx.PHONE.pattern, RegEx.PHONE.msg)
     ])
     photo = models.ImageField(upload_to=upload_user_photo, blank=True)

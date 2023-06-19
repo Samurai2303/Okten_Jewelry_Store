@@ -1,0 +1,112 @@
+.input_title {
+    font-family: "Agency FB", sans-serif;
+    font-size: 14px;
+}
+
+
+.input {
+    width: 270px;
+    height: 30px;
+    font-family: "Agency FB", sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.btn {
+    width: 110px;
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Agency FB", sans-serif;
+    font-size: 25px;
+    font-weight: 550;
+    letter-spacing: 4px;
+    border-radius: 8px;
+    border: 1px solid black;
+    transition: 600ms;
+    height: 40px;
+}
+
+.btn:enabled:hover {
+    box-shadow: 0 0 10px 0 inset rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+}
+
+.btn:disabled {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.btn_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.img {
+    width: 120px;
+}
+
+.img_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1px solid black;
+    overflow: hidden;
+    margin: 10px;
+}
+
+.file_input {
+    display: none;
+}
+
+.label {
+    width: 150px;
+    height: 25px;
+    font-family: "Agency FB", sans-serif;
+    color: black;
+    border: 1px solid black;
+    border-radius: 20px;
+    transition: 300ms;
+    background: #e6e6e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.label:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px 0 inset rgba(0, 0, 0, 0.6);
+}
+
+.camera {
+    margin-left: 5px;
+}
+
+.error {
+    width: 280px;
+    color: #be0000;
+    font-family: "Agency FB", sans-serif;
+    font-size: 15px;
+}
+
+.message {
+    width: 280px;
+    font-family: "Agency FB", sans-serif;
+    font-size: 20px;
+    color: #5ab75a;
+    text-align: center;
+}

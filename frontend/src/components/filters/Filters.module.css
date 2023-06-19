@@ -1,0 +1,193 @@
+.wrap {
+    width: 280px;
+    /*height: calc(100vh - 50px);*/
+    border-right: 1px solid black;
+    margin-top: 18px;
+
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    letter-spacing: 3px;
+    font-weight: bold;
+    font-family: "Agency FB", sans-serif;
+    margin-bottom: 10px;
+}
+
+.block {
+    height: 30px;
+    padding: 5px;
+    overflow: hidden;
+    border-bottom: 1px solid black;
+    margin-right: 8px;
+    transition: 350ms;
+}
+
+.title_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.block_title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 530;
+    letter-spacing: 2px;
+    font-family: "Agency FB", sans-serif;
+}
+
+.arrow {
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    margin-top: 7px;
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    transform: rotate(-135deg);
+    border-radius: 2px;
+    transition: 300ms;
+}
+
+.arrow:hover {
+    cursor: pointer;
+}
+
+.category_block > div:nth-child(1) > div:nth-child(2) {
+    transform: rotate(45deg);
+}
+
+.producer_block > div:nth-child(1) > div:nth-child(2) {
+    transform: rotate(45deg);
+}
+
+.material_block > div:nth-child(1) > div:nth-child(2) {
+    transform: rotate(45deg);
+}
+
+.category_block {
+    height: 160px;
+}
+
+.producer_block {
+    height: 80px;
+}
+
+.material_block {
+    height: 140px;
+}
+
+label {
+    font-family: "Agency FB", sans-serif;
+    letter-spacing: 1px;
+}
+
+.range_block {
+    height: 63px;
+    padding: 5px;
+    border-bottom: 1px solid black;
+    margin-right: 8px;
+}
+
+.range_block_title {
+    font-size: 22px;
+    font-weight: 530;
+    letter-spacing: 2px;
+    font-family: "Agency FB", sans-serif;
+    margin-bottom: 9px;
+}
+
+.number_input {
+    width: 40px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1px solid black;
+    font-family: "Agency FB", sans-serif;
+    margin: 0 6px;
+}
+
+.input_text {
+    font-family: "Agency FB", sans-serif;
+    font-size: 18px;
+}
+
+.in_stock_div {
+    font-family: "Agency FB", sans-serif;
+    font-size: 18px;
+    font-weight: 530;
+    letter-spacing: 2px;
+    margin: 8px 0 10px 8px;
+}
+
+.search_btn {
+    width: 120px;
+    height: 40px;
+    font-family: "Agency FB", sans-serif;
+    font-size: 25px;
+    font-weight: 580;
+    letter-spacing: 4px;
+    color: black;
+    border-radius: 8px;
+    border: 1px solid black;
+    transition: 600ms;
+}
+
+.search_btn:hover {
+    box-shadow: 0 0 10px 0 inset rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+}
+
+.btn_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox {
+    position: relative;
+    cursor: pointer;
+    transition: 200ms;
+}
+
+.checkbox:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    top: 0;
+    left: 0;
+    border: 1px solid gray;
+    border-radius: 3px;
+    background-color: white;
+}
+.checkbox:checked:before {
+    background: black;
+}
+
+.checkbox:checked:after {
+    content: "";
+    display: block;
+    width: 3px;
+    height: 6px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    border-radius: 1px;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 1px;
+    left: 4px;
+}
+
+.checkbox:checked {
+    background: white;
+    border-color: white;
+}
+
+.checkbox:hover {
+    border-color: black;
+}

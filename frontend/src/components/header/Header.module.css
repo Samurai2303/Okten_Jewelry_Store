@@ -1,0 +1,31 @@
+.wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background: white;
+    border-bottom: 1px solid black;
+    padding: 0 2%;
+    box-sizing: border-box;
+}
+
+.title {
+    color: black;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: "Agency FB", sans-serif;
+    transition: 600ms;
+}
+
+.title:hover {
+    cursor: pointer;
+    /*box-shadow: 0 0 10px black, 0 0 20px 0 black inset;*/
+    text-shadow: rgba(0, 0, 0, 0.7) 0 0 15px;
+}
+
+.toolsWrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100px;
+}

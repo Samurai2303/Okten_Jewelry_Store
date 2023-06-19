@@ -1,0 +1,46 @@
+.wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 480px;
+    border-radius: 60px 0 60px 0;
+    border: 1px solid black;
+    padding: 20px;
+    margin: 50px;
+    position: relative;
+}
+
+.title {
+    font-family: "Agency FB", sans-serif;
+    font-weight: 550;
+    font-size: 35px;
+    letter-spacing: 5px;
+    margin: 15px;
+    text-align: center;
+}
+
+.go_back_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 80px;
+    height: 30px;
+}
+
+.go_back_wrap:hover {
+    cursor: pointer;
+}
+
+.arrow {
+    color: black;
+    font-size: 30px;
+}
+
+.back_text {
+    font-family: "Agency FB", sans-serif;
+    font-size: 18px;
+}

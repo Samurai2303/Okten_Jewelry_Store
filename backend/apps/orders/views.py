@@ -2,7 +2,7 @@ from apps.products.models import ProductModel, ProductWrapModel
 from apps.products.serializers import ProductWrapSerializer
 from core.pagination.pagination_class import CustomPaginationClass
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
@@ -103,14 +103,19 @@ class ConfirmOrderView(GenericAPIView):
     permission_classes = (IsAdminUser,)
 
     def post(self, *args, **kwargs):
+        order: OrderModel = self.get_object()
+
+        if order.status == 'Confirmed':
+            serializer = self.serializer_class(order)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
         data: dict = self.request.data
         try:
             delivery_number = data.pop('delivery_number')
         except (Exception,):
             return Response('field "delivery_number" is required', status=status.HTTP_400_BAD_REQUEST)
-        order: OrderModel = self.get_object()
         order.delivery_number = delivery_number
-        order.status = 'confirmed'
+        order.status = 'Confirmed'
         order.save()
         product_wraps = order.product_wraps.all()
         for product_wrap in product_wraps:

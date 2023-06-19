@@ -1,0 +1,139 @@
+.wrap {
+    width: 150px;
+    height: 290px;
+    border-bottom: 1px solid black;
+    margin: 10px 10px 0;
+    transition: 300ms;
+}
+
+.wrap:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px 0 black;
+}
+
+.img {
+    width: 150px;
+}
+
+.photo_wrap {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.id {
+    font-family: "Agency FB", sans-serif;
+    font-size: 15px;
+    text-align: end;
+}
+
+.no_photo {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Agency FB", sans-serif;
+    font-size: 35px;
+    border: 1px solid black;
+}
+
+.text {
+    font-family: "Agency FB", sans-serif;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #282828;
+}
+
+
+.discounts_wrap {
+    display: flex;
+    padding: 0 10px 0 10px;
+}
+
+.old_price {
+    font-family: "Agency FB", sans-serif;
+    font-size: 14px;
+    color: #2f2f2f;
+    text-decoration: line-through;
+    margin-left: 10px;
+    padding-bottom: 2px;
+}
+
+.discounts {
+    width: 28px;
+    height: 12px;
+    margin-left: 10px;
+    border-radius: 10px;
+    color: white;
+    background: #cc0000;
+    font-family: "Agency FB", sans-serif;
+    font-weight: 530;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.price {
+    margin-top: 15px;
+    font-family: "Agency FB", sans-serif;
+    font-size: 22px;
+    font-weight: 580;
+    text-align: center;
+}
+
+.new_price {
+    font-family: "Agency FB", sans-serif;
+    font-size: 22px;
+    font-weight: 580;
+    text-align: center;
+}
+
+
+.buy {
+    height: 20px;
+    width: 50px;
+    letter-spacing: 3px;
+    border: 1px solid black;
+}
+
+.buy:hover {
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.7) inset;
+}
+
+.buy, .not_available {
+    font-family: "Agency FB", sans-serif;
+    font-size: 20px;
+    border-radius: 5px;
+    transition: 300ms;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.not_available {
+    width: 100px;
+    height: 20px;
+    color: gray;
+    border: 1px solid gray;
+}
+
+.buy_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.favorites {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding-right: 20px;
+}

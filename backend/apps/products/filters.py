@@ -10,6 +10,8 @@ class NumberRangeFilter(filters.BaseRangeFilter, filters.NumberFilter):
 class ProductFilters(filters.FilterSet):
     category = filters.CharFilter(field_name='category', lookup_expr='iexact')
     category_in = filters.BaseInFilter(field_name='category', lookup_expr='in')
+    producer = filters.CharFilter(field_name='producer', lookup_expr='iexact')
+    producer_in = filters.BaseInFilter(field_name='producer', lookup_expr='in')
     material = filters.CharFilter(field_name='material', lookup_expr='iexact')
     material_in = filters.BaseInFilter(field_name='material', lookup_expr='in')
     length_gte = filters.NumberFilter(field_name='length', lookup_expr='gte')
@@ -30,4 +32,4 @@ class ProductFilters(filters.FilterSet):
 
     class Meta:
         model = ProductModel
-        fields = ['category', 'material', 'length', 'clasp', 'price', 'discounts', 'amount', 'solded']
+        fields = ['category', 'producer', 'material', 'length', 'clasp', 'price', 'discounts', 'amount', 'solded']

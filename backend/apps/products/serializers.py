@@ -8,8 +8,11 @@ class ProductPhotoSerializer(ModelSerializer):
         model = ProductPhotosModel
         fields = ('id', 'photo')
 
-    # def to_representation(self, instance: ProductPhotosModel):
-    #     return instance.photo.url
+    def to_representation(self, instance: ProductPhotosModel):
+        return {
+            "id": instance.id,
+            "photo": instance.photo.url
+        }
 
 
 class ProductSerializer(ModelSerializer):
@@ -17,7 +20,9 @@ class ProductSerializer(ModelSerializer):
 
     class Meta:
         model = ProductModel
-        fields = ('id', 'category', 'material', 'length', 'clasp', 'price', 'discounts', 'amount', 'solded', 'photos')
+        fields = (
+            'id', 'created_at', 'category', 'producer', 'material', 'length', 'clasp', 'price', 'discounts', 'amount', 'solded',
+            'photos')
 
 
 class ProductWrapSerializer(ModelSerializer):

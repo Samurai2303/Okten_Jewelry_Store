@@ -2,6 +2,7 @@ from typing import Type
 
 from django.contrib.auth import get_user_model
 
+from apps.products.models import ProductModel
 from apps.products.serializers import ProductSerializer
 from core.pagination.pagination_class import CustomPaginationClass
 from core.services.email_service import EmailService
@@ -50,7 +51,7 @@ class BlockUserView(GenericAPIView):
     def get_queryset(self):
         return self.queryset.exclude(pk=self.request.user.pk)
 
-    def patch(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
         user = self.get_object()
         user.is_active = False
         user.save()
@@ -66,7 +67,7 @@ class ActivateUserView(GenericAPIView):
     def get_queryset(self):
         return self.queryset.exclude(pk=self.request.user.pk)
 
-    def patch(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
         user = self.get_object()
         user.is_active = True
         user.save()
@@ -127,7 +128,7 @@ class MakeAdminView(GenericAPIView):
     def get_queryset(self):
         return self.queryset.exclude(pk=self.request.user.pk)
 
-    def patch(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
         user = self.get_object()
         user.is_staff = True
         user.save()
@@ -140,7 +141,10 @@ class MakeUserView(GenericAPIView):
     queryset = UserModel.objects.all()
     permission_classes = (IsSuperUser,)
 
-    def patch(self, *args, **kwargs):
+    def get_queryset(self):
+        return self.queryset.exclude(pk=self.request.user.pk)
+
+    def post(self, *args, **kwargs):
         user = self.get_object()
         user.is_staff = False
         user.save()
@@ -148,7 +152,7 @@ class MakeUserView(GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class FavoriteProductsView(GenericAPIView):
+class GetFavoritesView(GenericAPIView):
     serializer_class = ProductSerializer
     queryset = UserModel.objects.all()
     pagination_class = CustomPaginationClass
@@ -158,18 +162,22 @@ class FavoriteProductsView(GenericAPIView):
         serializer = UserSerializer(user)
         return Response(serializer.data['favorites'], status=status.HTTP_200_OK)
 
+
+class AddDeleteFavoritesView(GenericAPIView):
+    serializer_class = ProductSerializer
+    queryset = ProductModel.objects.all()
+    pagination_class = CustomPaginationClass
+
     def post(self, *args, **kwargs):
-        user: UserModel = self.request.user
-        product = self.request.data
-        product = self.serializer_class(product)
+        user:UserModel = self.request.user
+        product = self.get_object()
         user.favorites.add(product)
         serializer = UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, *args, **kwargs):
-        user: UserModel = self.request.user
-        product = self.request.data
-        product = self.serializer_class(product)
+        user = self.request.user
+        product = self.get_object()
         user.favorites.remove(product)
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)

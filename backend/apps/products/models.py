@@ -8,13 +8,15 @@ class ProductModel(models.Model):
         db_table = 'products'
 
     category = models.CharField(max_length=32)
+    producer = models.CharField(max_length=32)
     material = models.CharField(max_length=32)
-    length = models.IntegerField(blank=True)
+    length = models.IntegerField(default=0)
     clasp = models.CharField(max_length=32, blank=True)
     price = models.IntegerField()
     discounts = models.IntegerField(default=0)
     amount = models.IntegerField(default=0)
     solded = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class ProductPhotosModel(models.Model):

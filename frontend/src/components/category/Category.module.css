@@ -1,0 +1,38 @@
+.wrap {
+    width: 150px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 1px solid black;
+    margin: 10px;
+    padding-bottom: 10px;
+    transition: 300ms;
+}
+
+.wrap:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px 0 black;
+}
+
+.title {
+    font-family: "Agency FB", sans-serif;
+    font-size: 26px;
+    font-weight: 530;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.img {
+    width: 150px;
+}
+
+.img_wrap {
+    width: 150px;
+    height: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}

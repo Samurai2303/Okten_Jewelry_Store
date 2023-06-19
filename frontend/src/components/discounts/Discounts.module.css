@@ -1,0 +1,17 @@
+.wrap {
+    padding: 15px;
+}
+
+.title {
+    font-family: "Agency FB", sans-serif;
+    font-weight: 540;
+    font-size: 32px;
+    text-align: center;
+    letter-spacing: 5px;
+}
+
+.products_wrap {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}

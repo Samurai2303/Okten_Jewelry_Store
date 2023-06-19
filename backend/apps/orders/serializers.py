@@ -11,4 +11,9 @@ class OrderSerializer(ModelSerializer):
 
     class Meta:
         model = OrderModel
-        fields = ('id', 'status', 'delivery_number', 'delivery_place', 'comment', 'created_at', 'user', 'product_wraps')
+        fields = ('id', 'status', 'delivery_number', 'delivery_place', 'comment', 'price', 'created_at', 'user',
+                  'product_wraps')
+
+    def create(self, validated_data: OrderModel):
+        validated_data.status = 'Created'
+        return super().create(validated_data)

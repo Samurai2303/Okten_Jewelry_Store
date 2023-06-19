@@ -9,6 +9,7 @@ from rest_framework.serializers import ModelSerializer
 
 from .models import ProfileModel
 from .models import UserModel as User
+from apps.products.serializers import ProductSerializer
 
 UserModel: Type[User] = get_user_model()
 
@@ -27,8 +28,7 @@ class ProfileSerializer(ModelSerializer):
 
 class UserSerializer(ModelSerializer, BaseUserManager):
     profile = ProfileSerializer()
-
-    # favorites = ProductSerializer(many=True, read_only=True)
+    favorites = ProductSerializer(many=True, read_only=True)
 
     class Meta:
         model = UserModel

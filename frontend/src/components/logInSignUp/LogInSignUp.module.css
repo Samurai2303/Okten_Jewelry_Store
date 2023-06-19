@@ -1,0 +1,26 @@
+.wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 170px;
+}
+.btn {
+    border-radius: 5px;
+    border: 1px solid black;
+    color: black;
+    font-family: "Agency FB", serif;
+    font-size: 18px;
+    font-weight: 525;
+    width: 80px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 2px;
+    transition: 500ms;
+}
+
+.btn:hover{
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.5) inset;
+    cursor: pointer;
+}

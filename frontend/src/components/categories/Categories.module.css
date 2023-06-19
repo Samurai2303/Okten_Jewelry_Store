@@ -1,0 +1,44 @@
+.wrap {
+    padding-bottom: 15px;
+    margin-top: 10px;
+}
+
+.title {
+    text-align: center;
+    font-family: "Agency FB", sans-serif;
+    font-size: 32px;
+    font-weight: 540;
+    letter-spacing: 5px;
+}
+
+.categories_wrap {
+    display: flex;
+    overflow: auto;
+    justify-content: space-evenly;
+    margin-top: 5px;
+}
+
+@media screen and (max-width: 1300px) {
+    .categories_wrap {
+        justify-content: normal;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(190, 190, 190);
+    border-radius: 10px;
+    box-shadow: 0 0 5px 0 white inset;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: rgb(150, 150, 150);
+}
